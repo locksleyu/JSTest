@@ -1,0 +1,118 @@
+<canvas id="myCanvas" width="1200" height="600" style="border:1px solid #000000;">
+
+</canvas>
+<head>
+    <style>
+        canvas {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<script type="text/javascript">
+
+// JavaScript code for simulation
+simulate=function(){	
+
+	      // Get canvas element
+	      const canvas = document.getElementById('myCanvas');
+	      const ctx = canvas.getContext('2d');
+
+  		  let x_ = [];
+  		  let y_ = [];
+  		  let xa_ = [];
+  		  let ya_ = [];
+	
+  		  let cr_ = [];
+    	  let cg_ = [];
+  		  let cb_ = [];
+
+	      // Set ball radius
+	      const ballRadius = 5;
+  
+  		  const speed = 0.1;
+	
+  		  const c = 10; // number of elements
+  
+		  function init() {
+			for (i = 0;i<c;i++) {
+				x_[i] = Math.random() * 500;
+			    y_[i] = Math.random() * 600;
+			    xa_[i] = 0;
+			    ya_[i] = 0;
+			  
+			    cr_[i] = Math.floor(Math.random() * 256);
+			  	cg_[i] = Math.floor(Math.random() * 256);
+			  	cb_[i] = Math.floor(Math.random() * 256);
+
+  			}
+		  }
+  
+    	  init();
+  
+	      // Function to draw the ball
+	      function drawBall() {
+			for (i=0;i<c;i++) {
+	    		ctx.beginPath();
+	      		ctx.arc(x_[i], y_[i], ballRadius, 0, Math.PI * 2);
+	     		//ctx.fillStyle = 'blue';
+			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
+	      		ctx.fill();
+	     		ctx.closePath();
+			}
+	      }
+	
+	      // Function to update ball position
+	      function updateBallPosition() {
+	        // Clear canvas
+	        ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+	        // Draw ball
+	        drawBall();
+	
+			
+			for (a=0;a<c;a++) {
+			  for  (b=0;b<c;b++) {
+				if (a == b) continue;
+					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
+
+					xa_[a] = xa_[a] + (x_[b]-x_[a]) / d;
+					ya_[a] = ya_[a] + (y_[b]-y_[a]) / d;
+
+					xa_[b] = xa_[b] + (x_[a]-x_[b]) / d;
+					ya_[b] = ya_[b] + (y_[a]-y_[b]) / d;
+
+			  }
+			}
+				
+			
+			
+			  for (b=0;b<c;b++) {
+				//xa_[b] = 0.1;
+				x_[b] = x_[b] + xa_[b]*speed;
+				y_[b] = y_[b] + ya_[b]*speed;
+			  }
+			
+		
+			
+	
+			/*
+	        // Reverse direction if ball hits canvas edges
+	        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+	          dx = -dx;
+	        }
+	        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+	          dy = -dy;
+	        }*/
+			
+		  }
+	
+	      // Call updateBallPosition function repeatedly for animation
+	      setInterval(updateBallPosition, 10);
+}
+
+simulate();
+document.activeElement.blur(); 
+document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+</script>
