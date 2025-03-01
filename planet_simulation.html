@@ -30,13 +30,13 @@ simulate=function(){
 	      // Set ball radius
 	      const ballRadius = 5;
   
-  		  const speed = 0.1;
+  		  const speed = 0.004;
 	
-  		  const c = 10; // number of elements
+  		  const c = 100; // number of elements
   
 		  function init() {
 			for (i = 0;i<c;i++) {
-				x_[i] = Math.random() * 500;
+				x_[i] = Math.random() * 1200;
 			    y_[i] = Math.random() * 600;
 			    xa_[i] = 0;
 			    ya_[i] = 0;
