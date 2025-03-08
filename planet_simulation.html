@@ -42,12 +42,15 @@ simulate=function(){
     	  let cg_ = [];
   		  let cb_ = [];
 
+  		  let s_ = [];
+
+
 	      // Set ball radius
 	      const ballRadius = 5;
   
-  		  const speed = 0.004;
+  		  const speed = 0.004 / 10;
 	
-  		  const c = 100; // number of elements
+  		  const c = 300; // number of elements
   
   		  const mapx = 1200, mapy = 600;
 
@@ -61,6 +64,8 @@ simulate=function(){
 			    cr_[i] = Math.floor(Math.random() * 256);
 			  	cg_[i] = Math.floor(Math.random() * 256);
 			  	cb_[i] = Math.floor(Math.random() * 256);
+
+			  	s_[i] = 1*Math.floor(Math.random() * 16);
 
   			}
 		  }
@@ -79,7 +84,7 @@ simulate=function(){
 
 			for (i=0;i<c;i++) {
 	    		ctx.beginPath();
-	      		ctx.arc((x_[i]-mapx/2)*scale+mapx/2, (y_[i]-mapy/2)*scale+mapy/2, ballRadius, 0, Math.PI * 2);
+	      		ctx.arc((x_[i]-mapx/2)*scale+mapx/2, (y_[i]-mapy/2)*scale+mapy/2, s_[i]*scale, 0, Math.PI * 2);
 			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
 	      		ctx.fill();
 	     		ctx.closePath();
@@ -109,11 +114,11 @@ simulate=function(){
 					}
 					else {
 						*/
-						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d;
-						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d;
+						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d * s_[a];
+						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d * s_[a];
 
-						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d;
-						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d;
+						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d * s_[b];
+						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d * s_[b];
 				//	}
 			  }
 			}
