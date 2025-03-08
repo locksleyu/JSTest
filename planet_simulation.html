@@ -1,3 +1,14 @@
+<html>
+<body>
+
+<div class="slidecontainer">
+  <input id="slider" type="range" min="1" max="100" value="50" class="slider" id="myRange">
+</div>
+
+</body>
+</html>
+
+
 <canvas id="myCanvas" width="1200" height="600" style="border:1px solid #000000;">
 
 </canvas>
@@ -34,10 +45,12 @@ simulate=function(){
 	
   		  const c = 100; // number of elements
   
+  		  const mapx = 1200, mapy = 600;
+
 		  function init() {
 			for (i = 0;i<c;i++) {
-				x_[i] = Math.random() * 1200;
-			    y_[i] = Math.random() * 600;
+				x_[i] = Math.random() * mapx;
+			    y_[i] = Math.random() * mapy;
 			    xa_[i] = 0;
 			    ya_[i] = 0;
 			  
@@ -50,12 +63,19 @@ simulate=function(){
   
     	  init();
   
+
 	      // Function to draw the ball
 	      function drawBall() {
+
+	      	var sliderval = document.getElementById("slider").value
+  			var scale = 1.0*sliderval/50.0;
+
+  			console.log("slidervalue = ", + sliderval);
+ 
+
 			for (i=0;i<c;i++) {
 	    		ctx.beginPath();
-	      		ctx.arc(x_[i], y_[i], ballRadius, 0, Math.PI * 2);
-	     		//ctx.fillStyle = 'blue';
+	      		ctx.arc(x_[i]*scale, y_[i]*scale, ballRadius, 0, Math.PI * 2);
 			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
 	      		ctx.fill();
 	     		ctx.closePath();
@@ -76,26 +96,30 @@ simulate=function(){
 				if (a == b) continue;
 					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
 
-					xa_[a] = xa_[a] + (x_[b]-x_[a]) / d;
-					ya_[a] = ya_[a] + (y_[b]-y_[a]) / d;
+/*
+					if (d <= ballRadius*2 + 5) {
+						xa_[a] = 0;
+						ya_[a] = 0;
+						xa_[b] = 0;
+						ya_[b] = 0;
+					}
+					else {
+						*/
+						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d;
+						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d;
 
-					xa_[b] = xa_[b] + (x_[a]-x_[b]) / d;
-					ya_[b] = ya_[b] + (y_[a]-y_[b]) / d;
-
+						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d;
+						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d;
+				//	}
 			  }
 			}
 				
-			
-			
 			  for (b=0;b<c;b++) {
 				//xa_[b] = 0.1;
 				x_[b] = x_[b] + xa_[b]*speed;
 				y_[b] = y_[b] + ya_[b]*speed;
 			  }
 			
-		
-			
-	
 			/*
 	        // Reverse direction if ball hits canvas edges
 	        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
