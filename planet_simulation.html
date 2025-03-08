@@ -6,6 +6,7 @@
   <br>
   Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
   <br>
+  <p id="p1"></p>
 
 </div>
 
@@ -44,13 +45,16 @@ simulate=function(){
 
   		  let s_ = [];
 
+  		  let lastDate = Date.now()
+  		  let frameCount = 0;
+
 
 	      // Set ball radius
 	      const ballRadius = 5;
   
   		  const speed = 0.004 / 10;
 	
-  		  const c = 300; // number of elements
+  		  const c = 1000; // number of elements
   
   		  const mapx = 1200, mapy = 600;
 
@@ -77,10 +81,14 @@ simulate=function(){
 	      function drawBall() {
 
 	      	var sliderval = document.getElementById("slider").value
-  			var scale = 1.0*sliderval/50.0;
+  			var scale = 1.0*sliderval/50.0; 
 
-  			console.log("slidervalue = ", + sliderval);
- 
+  			frameCount++;
+
+  			var diff = Date.now() - lastDate;
+  			lastDate = Date.now();
+
+			document.getElementById("p1").innerHTML = diff + " ms";
 
 			for (i=0;i<c;i++) {
 	    		ctx.beginPath();
