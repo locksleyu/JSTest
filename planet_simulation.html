@@ -2,7 +2,7 @@
 <body>
 
 <div class="slidecontainer">
-  Zoom <input id="slider" type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  Zoom <input id="slider" type="range" min="1" max="100" value="20" class="slider" id="myRange">
   <br>
   Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
   <br>
@@ -111,6 +111,7 @@ simulate=function(){
 			for (a=0;a<c;a++) {
 			  for  (b=0;b<c;b++) {
 				if (a == b) continue;
+				if (a > b) continue; // don't do things twice
 					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
 
 /*
