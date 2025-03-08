@@ -2,7 +2,11 @@
 <body>
 
 <div class="slidecontainer">
-  <input id="slider" type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  Zoom <input id="slider" type="range" min="1" max="100" value="50" class="slider" id="myRange">
+  <br>
+  Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
+  <br>
+
 </div>
 
 </body>
@@ -75,7 +79,7 @@ simulate=function(){
 
 			for (i=0;i<c;i++) {
 	    		ctx.beginPath();
-	      		ctx.arc(x_[i]*scale, y_[i]*scale, ballRadius, 0, Math.PI * 2);
+	      		ctx.arc((x_[i]-mapx/2)*scale+mapx/2, (y_[i]-mapy/2)*scale+mapy/2, ballRadius, 0, Math.PI * 2);
 			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
 	      		ctx.fill();
 	     		ctx.closePath();
@@ -114,10 +118,13 @@ simulate=function(){
 			  }
 			}
 				
+			var slider2val = document.getElementById("slider2").value
+  			var speedscaler = 1.0*slider2val/250.0;
+
 			  for (b=0;b<c;b++) {
 				//xa_[b] = 0.1;
-				x_[b] = x_[b] + xa_[b]*speed;
-				y_[b] = y_[b] + ya_[b]*speed;
+				x_[b] = x_[b] + xa_[b]*speed*speedscaler;
+				y_[b] = y_[b] + ya_[b]*speed*speedscaler;
 			  }
 			
 			/*
