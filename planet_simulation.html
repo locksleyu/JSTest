@@ -122,11 +122,11 @@ simulate=function(){
 					}
 					else {
 						*/
-						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d * s_[a];
-						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d * s_[a];
+						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d * s_[b]; 
+						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d * s_[b];
 
-						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d * s_[b];
-						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d * s_[b];
+						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d * s_[a];
+						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d * s_[a];
 				//	}
 			  }
 			}
