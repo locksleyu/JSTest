@@ -6,6 +6,8 @@
   <br>
   Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
   <br>
+  Count <input id="slider3" type="range" min="1" max="3000" value="300" class="slider" id="myRange">
+
   <p id="p1"></p>
 
 </div>
@@ -54,7 +56,7 @@ simulate=function(){
   
   		  const speed = 0.004 / 10;
 	
-  		  const c = 1000; // number of elements
+  		  const c = 2000; // number of elements
   
   		  const mapx = 1200, mapy = 600;
 
@@ -88,9 +90,11 @@ simulate=function(){
   			var diff = Date.now() - lastDate;
   			lastDate = Date.now();
 
-			document.getElementById("p1").innerHTML = diff + " ms";
+	      	var ballCount = document.getElementById("slider3").value;
 
-			for (i=0;i<c;i++) {
+			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount;
+
+			for (i=0;i<ballCount;i++) {
 	    		ctx.beginPath();
 	      		ctx.arc((x_[i]-mapx/2)*scale+mapx/2, (y_[i]-mapy/2)*scale+mapy/2, s_[i]*scale, 0, Math.PI * 2);
 			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
@@ -108,8 +112,10 @@ simulate=function(){
 	        drawBall();
 	
 			
-			for (a=0;a<c;a++) {
-			  for  (b=0;b<c;b++) {
+			var ballCount = document.getElementById("slider3").value;
+
+			for (a=0;a<ballCount;a++) {
+			  for  (b=0;b<ballCount;b++) {
 				if (a == b) continue;
 				if (a > b) continue; // don't do things twice
 					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
