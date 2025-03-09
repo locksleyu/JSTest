@@ -8,6 +8,7 @@
   <br>
   Count <input id="slider3" type="range" min="1" max="3000" value="300" class="slider" id="myRange">
 
+  <br><a href = 'https://github.com/locksleyu/JSTest/commits/main/'> Click to see code change history </a>
   <p id="p1"></p>
 
 </div>
@@ -54,7 +55,7 @@ simulate=function(){
 	      // Set ball radius
 	      const ballRadius = 5;
   
-  		  const speed = 0.004 / 10;
+  		  const speed = 0.0004 / 1000;
 	
   		  const c = 2000; // number of elements
   
@@ -129,11 +130,11 @@ simulate=function(){
 					}
 					else {
 						*/
-						xa_[a] = xa_[a] + (x_[b]-x_[a]) / d * s_[b]; 
-						ya_[a] = ya_[a] + (y_[b]-y_[a]) / d * s_[b];
+						xa_[a] = xa_[a] + (x_[b]-x_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+						ya_[a] = ya_[a] + (y_[b]-y_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
 
-						xa_[b] = xa_[b] + (x_[a]-x_[b]) / d * s_[a];
-						ya_[b] = ya_[b] + (y_[a]-y_[b]) / d * s_[a];
+						xa_[b] = xa_[b] + (x_[a]-x_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+						ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
 				//	}
 			  }
 			}
