@@ -34,6 +34,10 @@
 
 let mx = -1;
 let my = -1;
+let msize = 0;
+let scale = 1;
+const mapx = 1200, mapy = 600;
+
 
 onmousemove = function(e){
 
@@ -41,8 +45,12 @@ onmousemove = function(e){
 
     let r = canvas.getBoundingClientRect();
 	
-	mx = e.clientX - r.left;
-	my = e.clientY - r.top;
+	
+	mx = (e.clientX - r.left)/scale;
+	my = (e.clientY - r.top)/scale;
+
+	mx = ((e.clientX - r.left) - mapx/2)/scale + mapx/2;
+	my = ((e.clientY - r.top) - mapy/2)/scale + mapy/2;
 }
 
 // JavaScript code for simulation
@@ -74,8 +82,6 @@ simulate=function(){
 	
   		  const c = 2000; // number of elements
   
-  		  const mapx = 1200, mapy = 600;
-
 		  function init() {
 			for (i = 0;i<c;i++) {
 				x_[i] = Math.random() * mapx;
@@ -99,7 +105,7 @@ simulate=function(){
 	      function drawBall() {
 
 	      	var sliderval = document.getElementById("slider").value
-  			var scale = 1.0*sliderval/50.0; 
+  			scale = 1.0*sliderval/50.0; 
 
   			frameCount++;
 
@@ -108,7 +114,7 @@ simulate=function(){
 
 	      	var ballCount = document.getElementById("slider3").value;
 
-			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount + ",mouse = " + mx + "," + my;
+			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount + ", mouse strength = " + msize;
 
 			for (i=0;i<ballCount;i++) {
 	    		ctx.beginPath();
@@ -130,7 +136,7 @@ simulate=function(){
 			
 			var ballCount = document.getElementById("slider3").value;
 
-	      	var msize = document.getElementById("slider4").value;
+	      	msize = document.getElementById("slider4").value;
 
 			for (a=0;a<ballCount;a++) {
 			  for  (b=0;b<ballCount;b++) {
@@ -156,7 +162,8 @@ simulate=function(){
 				
 			if ((mx > 0) && (my > 0)) { // draw proxy ball for mouse if on screen
 	    		ctx.beginPath();
-	      		ctx.arc(mx, my, msize, 0, Math.PI * 2);
+
+	      		ctx.arc((mx-mapx/2)*scale+mapx/2, (my-mapy/2)*scale+mapy/2, Math.abs(msize)*scale, 0, Math.PI * 2);
 			    ctx.fillStyle = "white";
 	      		ctx.fill();
 	     		ctx.closePath();
