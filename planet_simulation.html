@@ -7,6 +7,8 @@
   Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
   <br>
   Count <input id="slider3" type="range" min="1" max="3000" value="300" class="slider" id="myRange">
+  <br>
+  Mouse strength <input id="slider4" type="range" min="-50" max="50" value="5" class="slider" id="myRange">
 
   <br><a href = 'https://github.com/locksleyu/JSTest/commits/main/'> Click to see code change history </a>
   <p id="p1"></p>
@@ -29,6 +31,19 @@
 </head>
 
 <script type="text/javascript">
+
+let mx = -1;
+let my = -1;
+
+onmousemove = function(e){
+
+	let canvas = document.getElementById ("myCanvas");
+
+    let r = canvas.getBoundingClientRect();
+	
+	mx = e.clientX - r.left;
+	my = e.clientY - r.top;
+}
 
 // JavaScript code for simulation
 simulate=function(){	
@@ -93,7 +108,7 @@ simulate=function(){
 
 	      	var ballCount = document.getElementById("slider3").value;
 
-			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount;
+			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount + ",mouse = " + mx + "," + my;
 
 			for (i=0;i<ballCount;i++) {
 	    		ctx.beginPath();
@@ -115,30 +130,38 @@ simulate=function(){
 			
 			var ballCount = document.getElementById("slider3").value;
 
+	      	var msize = document.getElementById("slider4").value;
+
 			for (a=0;a<ballCount;a++) {
 			  for  (b=0;b<ballCount;b++) {
 				if (a == b) continue;
 				if (a > b) continue; // don't do things twice
 					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
 
-/*
-					if (d <= ballRadius*2 + 5) {
-						xa_[a] = 0;
-						ya_[a] = 0;
-						xa_[b] = 0;
-						ya_[b] = 0;
-					}
-					else {
-						*/
-						xa_[a] = xa_[a] + (x_[b]-x_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-						ya_[a] = ya_[a] + (y_[b]-y_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					xa_[a] = xa_[a] + (x_[b]-x_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					ya_[a] = ya_[a] + (y_[b]-y_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
 
-						xa_[b] = xa_[b] + (x_[a]-x_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-						ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-				//	}
+					xa_[b] = xa_[b] + (x_[a]-x_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+			  }
+
+			  if ((mx > 0) && (my > 0)) {
+			  		let d = Math.sqrt(Math.pow(x_[a]-mx,2) + Math.pow(y_[a]-my,2));
+
+					xa_[a] = xa_[a] + (mx-x_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
+					ya_[a] = ya_[a] + (my-y_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
+
 			  }
 			}
 				
+			if ((mx > 0) && (my > 0)) { // draw proxy ball for mouse if on screen
+	    		ctx.beginPath();
+	      		ctx.arc(mx, my, msize, 0, Math.PI * 2);
+			    ctx.fillStyle = "white";
+	      		ctx.fill();
+	     		ctx.closePath();
+	     	}
+
 			var slider2val = document.getElementById("slider2").value
   			var speedscaler = 1.0*slider2val/250.0;
 
