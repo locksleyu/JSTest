@@ -1,0 +1,202 @@
+<html>
+<body>
+
+<div class="slidecontainer">
+  Zoom <input id="slider" type="range" min="1" max="100" value="20" class="slider" id="myRange">
+  <br>
+  Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
+  <br>
+  Count <input id="slider3" type="range" min="1" max="3000" value="300" class="slider" id="myRange">
+  <br>
+  Mouse strength <input id="slider4" type="range" min="-200" max="200" value="-50" class="slider" id="myRange">
+
+  <br><a href = 'https://github.com/locksleyu/JSTest/commits/main/'> Click to see code change history </a>
+  <p id="p1"></p>
+
+</div>
+
+</body>
+</html>
+
+
+<canvas id="myCanvas" width="1200" height="600" style="border:1px solid #000000;">
+
+</canvas>
+<head>
+    <style>
+        canvas {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<script type="text/javascript">
+
+let mx = -1;
+let my = -1;
+let msize = 0;
+let scale = 1;
+const mapx = 1200, mapy = 600;
+let mouseonscreen = false;
+
+onmousemove = function(e){
+
+	let canvas = document.getElementById ("myCanvas");
+
+    let r = canvas.getBoundingClientRect();
+	
+	if ((e.clientY - r.top) > 0) mouseonscreen = true;
+	else mouseonscreen = false;
+	
+	mx = (e.clientX - r.left)/scale;
+	my = (e.clientY - r.top)/scale;
+
+	mx = ((e.clientX - r.left) - mapx/2)/scale + mapx/2;
+	my = ((e.clientY - r.top) - mapy/2)/scale + mapy/2;
+}
+
+// JavaScript code for simulation
+simulate=function(){	
+
+	      // Get canvas element
+	      const canvas = document.getElementById('myCanvas');
+	      const ctx = canvas.getContext('2d');
+
+  		  let x_ = [];
+  		  let y_ = [];
+  		  let xa_ = [];
+  		  let ya_ = [];
+	
+  		  let cr_ = [];
+    	  let cg_ = [];
+  		  let cb_ = [];
+
+  		  let s_ = [];
+
+  		  let lastDate = Date.now()
+  		  let frameCount = 0;
+
+
+	      // Set ball radius
+	      const ballRadius = 5;
+  
+  		  const speed = 0.0004 / 1000;
+	
+  		  const c = 2000; // number of elements
+  
+		  function init() {
+			for (i = 0;i<c;i++) {
+				x_[i] = Math.random() * mapx;
+			    y_[i] = Math.random() * mapy;
+			    xa_[i] = 0;
+			    ya_[i] = 0;
+			  
+			    cr_[i] = Math.floor(Math.random() * 256);
+			  	cg_[i] = Math.floor(Math.random() * 256);
+			  	cb_[i] = Math.floor(Math.random() * 256);
+
+			  	s_[i] = 1*Math.floor(Math.random() * 16);
+
+  			}
+		  }
+  
+    	  init();
+  
+
+	      // Function to draw the ball
+	      function drawBall() {
+
+	      	var sliderval = document.getElementById("slider").value
+  			scale = 1.0*sliderval/50.0; 
+
+  			frameCount++;
+
+  			var diff = Date.now() - lastDate;
+  			lastDate = Date.now();
+
+	      	var ballCount = document.getElementById("slider3").value;
+
+			document.getElementById("p1").innerHTML = diff + " ms, Count = " + ballCount + ", mouse strength = " + msize;
+
+			for (i=0;i<ballCount;i++) {
+	    		ctx.beginPath();
+	      		ctx.arc((x_[i]-mapx/2)*scale+mapx/2, (y_[i]-mapy/2)*scale+mapy/2, s_[i]*scale, 0, Math.PI * 2);
+			  ctx.fillStyle = "rgb("+cr_[i]+","+cg_[i]+","+cb_[i]+")";
+	      		ctx.fill();
+	     		ctx.closePath();
+			}
+	      }
+	
+	      // Function to update ball position
+	      function updateBallPosition() {
+	        // Clear canvas
+	        ctx.clearRect(0, 0, canvas.width, canvas.height);
+	
+	        // Draw ball
+	        drawBall();
+	
+			
+			var ballCount = document.getElementById("slider3").value;
+
+	      	msize = document.getElementById("slider4").value;
+
+			for (a=0;a<ballCount;a++) {
+			  for  (b=0;b<ballCount;b++) {
+				if (a == b) continue;
+				if (a > b) continue; // don't do things twice
+					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2));
+
+					xa_[a] = xa_[a] + (x_[b]-x_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					ya_[a] = ya_[a] + (y_[b]-y_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+
+					xa_[b] = xa_[b] + (x_[a]-x_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+			  }
+
+			  if (mouseonscreen) {
+			  		let d = Math.sqrt(Math.pow(x_[a]-mx,2) + Math.pow(y_[a]-my,2));
+
+					xa_[a] = xa_[a] + (mx-x_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
+					ya_[a] = ya_[a] + (my-y_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
+
+			  }
+			}
+				
+			if (mouseonscreen) { // draw proxy ball for mouse if on screen
+	    		ctx.beginPath();
+
+	      		ctx.arc((mx-mapx/2)*scale+mapx/2, (my-mapy/2)*scale+mapy/2, Math.abs(msize)*scale, 0, Math.PI * 2);
+			    ctx.fillStyle = "white";
+	      		ctx.fill();
+	     		ctx.closePath();
+	     	}
+
+			var slider2val = document.getElementById("slider2").value
+  			var speedscaler = 1.0*slider2val/250.0;
+
+			  for (b=0;b<c;b++) {
+				//xa_[b] = 0.1;
+				x_[b] = x_[b] + xa_[b]*speed*speedscaler;
+				y_[b] = y_[b] + ya_[b]*speed*speedscaler;
+			  }
+			
+			/*
+	        // Reverse direction if ball hits canvas edges
+	        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+	          dx = -dx;
+	        }
+	        if (y + dy > canvas.height - ballRadius || y + dy < ballRadius) {
+	          dy = -dy;
+	        }*/
+			
+		  }
+	
+	      // Call updateBallPosition function repeatedly for animation
+	      setInterval(updateBallPosition, 10);
+}
+
+simulate();
+document.activeElement.blur(); 
+document.body.scrollTop = document.documentElement.scrollTop = 0;
+
+</script>
