@@ -37,7 +37,7 @@ let my = -1;
 let msize = 0;
 let scale = 1;
 const mapx = 1200, mapy = 600;
-
+let mouseonscreen = false;
 
 onmousemove = function(e){
 
@@ -45,6 +45,8 @@ onmousemove = function(e){
 
     let r = canvas.getBoundingClientRect();
 	
+	if ((e.clientY - r.top) > 0) mouseonscreen = true;
+	else mouseonscreen = false;
 	
 	mx = (e.clientX - r.left)/scale;
 	my = (e.clientY - r.top)/scale;
@@ -151,7 +153,7 @@ simulate=function(){
 					ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
 			  }
 
-			  if ((mx > 0) && (my > 0)) {
+			  if (mouseonscreen) {
 			  		let d = Math.sqrt(Math.pow(x_[a]-mx,2) + Math.pow(y_[a]-my,2));
 
 					xa_[a] = xa_[a] + (mx-x_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
@@ -160,7 +162,7 @@ simulate=function(){
 			  }
 			}
 				
-			if ((mx > 0) && (my > 0)) { // draw proxy ball for mouse if on screen
+			if (mouseonscreen) { // draw proxy ball for mouse if on screen
 	    		ctx.beginPath();
 
 	      		ctx.arc((mx-mapx/2)*scale+mapx/2, (my-mapy/2)*scale+mapy/2, Math.abs(msize)*scale, 0, Math.PI * 2);
