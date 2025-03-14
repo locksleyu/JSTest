@@ -169,9 +169,9 @@ simulate=function(){
 			  for  (b=0;b<ballCount;b++) {
 				if (a == b) continue;
 				if (a > b) continue; // don't do things twice
-					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2) + Math.pow(z_[a]-z_[b],2));
+					let d = Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2) + Math.pow(z_[a]-z_[b],2);
 
-					var precalc = (s_[a]**3) * (s_[b]**3) / (d**2);
+					var precalc = (s_[a]**3) * (s_[b]**3) / d;
 
 					xa_[a] = xa_[a] + (x_[b]-x_[a]) * precalc;
 					ya_[a] = ya_[a] + (y_[b]-y_[a]) * precalc;
@@ -181,18 +181,17 @@ simulate=function(){
 					ya_[b] = ya_[b] + (y_[a]-y_[b]) * precalc;
 					za_[b] = za_[b] + (z_[a]-z_[b]) * precalc;
 			  }
-
+/*
 			  if (mouseonscreen) {
 			  		let d = Math.sqrt(Math.pow(x_[a]-mx,2) + Math.pow(y_[a]-my,2));
-
 					xa_[a] = xa_[a] + (mx-x_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
 					ya_[a] = ya_[a] + (my-y_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
 					za_[a] = za_[a] + (mz-z_[a]) / (d**2) * (s_[a]**3) * (msize**3); 
-
-
 			  }
+			  */
 			}
 				
+				/*
 			if (mouseonscreen) { // draw proxy ball for mouse if on screen
 	    		ctx.beginPath();
 
@@ -201,7 +200,8 @@ simulate=function(){
 	      		ctx.fill();
 	     		ctx.closePath();
 	     	}
-
+*/
+			
 			var slider2val = document.getElementById("slider2").value
   			var speedscaler = 1.0*slider2val/250.0;
 
