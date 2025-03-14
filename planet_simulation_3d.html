@@ -201,14 +201,14 @@ simulate=function(){
 	     		ctx.closePath();
 	     	}
 */
-			
+
 			var slider2val = document.getElementById("slider2").value
-  			var speedscaler = 1.0*slider2val/250.0;
+  			var speedscaler = 1.0*slider2val/250.0*speed;
 
 			  for (b=0;b<c;b++) {
-				x_[b] = x_[b] + xa_[b]*speed*speedscaler;
-				y_[b] = y_[b] + ya_[b]*speed*speedscaler;
-				z_[b] = z_[b] + za_[b]*speed*speedscaler;
+				x_[b] = x_[b] + xa_[b]*speedscaler;
+				y_[b] = y_[b] + ya_[b]*speedscaler;
+				z_[b] = z_[b] + za_[b]*speedscaler;
 			  }
 		  }
 	
