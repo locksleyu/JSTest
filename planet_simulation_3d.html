@@ -6,7 +6,7 @@
   <br>
   Force <input id="slider2" type="range" min="1" max="500" value="250" class="slider" id="myRange">
   <br>
-  Count <input id="slider3" type="range" min="1" max="3000" value="300" class="slider" id="myRange">
+  Count <input id="slider3" type="range" min="1" max="3000" value="1500" class="slider" id="myRange">
   <br>
   Mouse strength <input id="slider4" type="range" min="-200" max="200" value="-50" class="slider" id="myRange">
     No redraw <input id="redrawCheckbox" type="checkbox">
@@ -171,14 +171,15 @@ simulate=function(){
 				if (a > b) continue; // don't do things twice
 					let d = Math.sqrt(Math.pow(x_[a]-x_[b],2) + Math.pow(y_[a]-y_[b],2) + Math.pow(z_[a]-z_[b],2));
 
-					xa_[a] = xa_[a] + (x_[b]-x_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-					ya_[a] = ya_[a] + (y_[b]-y_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-					za_[a] = za_[a] + (z_[b]-z_[a]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					var precalc = (s_[a]**3) * (s_[b]**3) / (d**2);
 
-					xa_[b] = xa_[b] + (x_[a]-x_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-					ya_[b] = ya_[b] + (y_[a]-y_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
-					za_[b] = za_[b] + (z_[a]-z_[b]) / (d**2) * (s_[a]**3) * (s_[b]**3); 
+					xa_[a] = xa_[a] + (x_[b]-x_[a]) * precalc;
+					ya_[a] = ya_[a] + (y_[b]-y_[a]) * precalc;
+					za_[a] = za_[a] + (z_[b]-z_[a]) * precalc;
 
+					xa_[b] = xa_[b] + (x_[a]-x_[b]) * precalc;
+					ya_[b] = ya_[b] + (y_[a]-y_[b]) * precalc;
+					za_[b] = za_[b] + (z_[a]-z_[b]) * precalc;
 			  }
 
 			  if (mouseonscreen) {
